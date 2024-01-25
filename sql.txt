@@ -1,0 +1,10 @@
+SELECT 
+    YEAR(Posts.CreationDate) AS Year,
+    Tags.TagName,
+    COUNT(*) AS TagCount,
+    SUM(COUNT(*)) OVER (PARTITION BY YEAR(Posts.CreationDate)) AS TotalTagsUsed
+FROM Posts
+INNER JOIN PostTags ON Posts.Id = PostTags.PostId
+INNER JOIN Tags ON PostTags.TagId = Tags.Id
+GROUP BY YEAR(Posts.CreationDate), Tags.TagName
+ORDER BY Year, Tags.TagName;
